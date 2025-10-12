@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "483360154993",
+    "project_id": "maw-ed",
+    "storage_bucket": "maw-ed.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483360154993:android:6156c4e4b86bf8c07382d0",
+        "android_client_info": {
+          "package_name": "com.example.maw3ed"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQpDfW2c518AyAp2FaFQyBhLDdVvP_p0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
