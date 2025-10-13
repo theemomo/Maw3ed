@@ -22,12 +22,12 @@ class ThemeModeCubit extends Cubit<ThemeData> {
 
     // Load theme (default to false = light)
     _isDark = preferences.getBool(_themeKey) ?? false;
-    // print(_isDark);
+    print(_isDark);
 
     // Load locale (default to 'en')
     final String? savedLocale = preferences.getString(_languageKey);
     _locale = Locale(savedLocale ?? 'en');
-    // print(_locale);
+    print(_locale);
 
     // Emit the loaded theme
     emit(

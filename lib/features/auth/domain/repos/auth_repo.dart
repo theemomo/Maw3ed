@@ -1,9 +1,9 @@
-import 'package:maw3ed/features/auth/domain/entities/app_user.dart';
+import 'package:maw3ed/features/auth/domain/entities/app_user_model.dart';
 
 abstract class AuthRepo {
-  Future<AppUser?> getCurrentUser();
-  Future<AppUser?> loginWithEmailAndPassword(String email, String password);
-  Future<AppUser?> registerWithEmailAndPassword(
+  Future<AppUserModel?> getCurrentUser();
+  Future<AppUserModel?> loginWithEmailAndPassword(String email, String password);
+  Future<AppUserModel?> registerWithEmailAndPassword(
     String name,
     String email,
     String password,

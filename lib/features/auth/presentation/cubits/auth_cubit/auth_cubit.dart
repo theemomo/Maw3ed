@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maw3ed/features/auth/data/firebase_auth_repo.dart';
-import 'package:maw3ed/features/auth/domain/entities/app_user.dart';
+import 'package:maw3ed/features/auth/domain/entities/app_user_model.dart';
 
 part 'auth_state.dart';
 
@@ -10,7 +10,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login(String email, String password) async {
     try {
       emit(AuthLoading());
-      final AppUser user = await _firebaseAuth.loginWithEmailAndPassword(
+      final AppUserModel user = await _firebaseAuth.loginWithEmailAndPassword(
         email,
         password,
       );
@@ -23,7 +23,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> register(String name, String email, String password) async {
     try {
       emit(AuthLoading());
-      final AppUser user = await _firebaseAuth.registerWithEmailAndPassword(
+      final AppUserModel user = await _firebaseAuth.registerWithEmailAndPassword(
         name,
         email,
         password,

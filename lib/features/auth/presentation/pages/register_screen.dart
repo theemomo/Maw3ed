@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
 import 'package:maw3ed/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
-import 'package:maw3ed/features/auth/presentation/widgets/text_field_widget.dart';
+import 'package:maw3ed/core/widgets/text_field_widget.dart';
 import 'package:maw3ed/generated/l10n.dart';
 
 class RegisterScreen extends StatefulWidget {

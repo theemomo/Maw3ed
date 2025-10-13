@@ -5,8 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maw3ed/core/route/app_router.dart';
 import 'package:maw3ed/core/utils/theme/theme_mode.dart';
 import 'package:maw3ed/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
-import 'package:maw3ed/features/auth/presentation/pages/login_screen.dart';
-import 'package:maw3ed/features/home/presentation/pages/home_screen.dart';
+import 'package:maw3ed/features/navigation_bar/presentation/pages/custom_bottom_navbar.dart';
 import 'package:maw3ed/features/onboarding/presentation/pages/onboarding_screen.dart';
 import 'package:maw3ed/features/settings/pages/settings_screen.dart';
 import 'package:maw3ed/generated/l10n.dart';
@@ -55,9 +54,9 @@ class MyApp extends StatelessWidget {
                     onGenerateRoute: AppRouter().onGenerateRoute,
                     // home: const SettingsScreen(),
                     home: state is Authenticated
-                        ? const HomeScreen()
+                        ? const CustomBottomNavbar()
                         : kIsWeb
-                        ? const LoginScreen()
+                        ? const CustomBottomNavbar()
                         : const OnboardingScreen(),
                   );
                 },

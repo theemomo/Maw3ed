@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:maw3ed/features/auth/domain/entities/app_user.dart';
+import 'package:maw3ed/features/auth/domain/entities/app_user_model.dart';
 import 'package:maw3ed/features/auth/domain/repos/auth_repo.dart';
 
 class FirebaseAuthRepo extends AuthRepo {
   final _auth = FirebaseAuth.instance;
 
   @override
-  Future<AppUser?> getCurrentUser() async {
+  Future<AppUserModel?> getCurrentUser() async {
     if (_auth.currentUser != null) {
       final user = _auth.currentUser!;
-      return AppUser(
+      return AppUserModel(
         uid: user.uid,
         name: user.displayName ?? '',
         email: user.email ?? '',
@@ -24,7 +24,7 @@ class FirebaseAuthRepo extends AuthRepo {
   }
 
   @override
-  Future<AppUser> loginWithEmailAndPassword(
+  Future<AppUserModel> loginWithEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -33,7 +33,7 @@ class FirebaseAuthRepo extends AuthRepo {
         email: email,
         password: password,
       );
-      return AppUser(uid: user.user!.uid, email: user.user!.email!, name: '');
+      return AppUserModel(uid: user.user!.uid, email: user.user!.email!, name: '');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('No user found for that email.');
@@ -46,7 +46,7 @@ class FirebaseAuthRepo extends AuthRepo {
   }
 
   @override
-  Future<AppUser> registerWithEmailAndPassword(
+  Future<AppUserModel> registerWithEmailAndPassword(
     String name,
     String email,
     String password,
@@ -56,7 +56,7 @@ class FirebaseAuthRepo extends AuthRepo {
         email: email,
         password: password,
       );
-      return AppUser(uid: user.user!.uid, email: user.user!.email!, name: name);
+      return AppUserModel(uid: user.user!.uid, email: user.user!.email!, name: name);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'email-already-in-use':

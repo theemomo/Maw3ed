@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
+import 'package:maw3ed/core/widgets/app_button.dart';
 import 'package:maw3ed/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
-import 'package:maw3ed/features/auth/presentation/widgets/text_field_widget.dart';
+import 'package:maw3ed/core/widgets/text_field_widget.dart';
 import 'package:maw3ed/generated/l10n.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -136,7 +137,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             } else if (state is Authenticated) {
                               print('Authenticated');
-                              Navigator.of(context).pushNamed(AppRoutes.homeRoute);
+                              Navigator.of(
+                                context,
+                              ).pushNamed(AppRoutes.homeRoute);
                             }
                           },
                           buildWhen: (previous, current) =>
@@ -173,7 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 children: [
                                   Text(
                                     "You are already logged in",
-                                    style: Theme.of(context).textTheme.bodyMedium!
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
                                         .copyWith(
                                           color: Theme.of(
                                             context,
@@ -182,17 +187,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                     textAlign: TextAlign.center,
                                   ),
                                   TextButton(
-                                    onPressed: (){
-                                      Navigator.of(context).pushNamed(AppRoutes.homeRoute);
+                                    onPressed: () {
+                                      Navigator.of(
+                                        context,
+                                      ).pushNamed(AppRoutes.homeRoute);
                                     },
                                     child: Text(
                                       "go to home screen",
-                                      style: Theme.of(context).textTheme.bodyMedium!
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
                                           .copyWith(
                                             color: Theme.of(
                                               context,
                                             ).colorScheme.primary,
-                                            fontWeight: FontWeight.bold
+                                            fontWeight: FontWeight.bold,
                                           ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -201,7 +210,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             }
 
-                            return ElevatedButton(
+                            return AppButton(
+                              title: S.of(context).loginScreenTitle,
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   BlocProvider.of<AuthCubit>(context).login(
@@ -210,31 +220,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 }
                               },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(
-                                  context,
-                                ).colorScheme.primary,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15),
-                                    bottomRight: Radius.circular(15),
-                                  ),
-                                ),
-                                minimumSize: Size(
-                                  double.infinity,
-                                  size.height * 0.06,
-                                ),
-                              ),
-                              child: Text(
-                                S.of(context).loginScreenTitle,
-                                style: Theme.of(context).textTheme.bodyLarge!
-                                    .copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.surface,
-                                    ),
-                              ),
                             );
                           },
                         ),

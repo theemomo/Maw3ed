@@ -7,7 +7,7 @@ final class AuthInitial extends AuthState {}
 final class AuthLoading extends AuthState {}
 
 final class Authenticated extends AuthState {
-  final AppUser user;
+  final AppUserModel user;
   Authenticated({required this.user});
 }
 
