@@ -162,7 +162,9 @@ class _AddEventScreenState extends State<AddEventScreen>
                       ..hideCurrentSnackBar()
                       ..showSnackBar(
                         const SnackBar(
-                          content: Text('Event added successfully!'),
+                          content: Text(
+                            'Event added successfully!, You will get a notification you remember your Maw\'ed',
+                          ),
                           behavior: SnackBarBehavior.floating,
                           backgroundColor: Colors.green,
                           duration: Duration(seconds: 1),
@@ -193,7 +195,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                           selectedTime == null ||
                           location == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: const Text('Please fill in all fields'),
                             behavior: SnackBarBehavior.floating,
                             backgroundColor: Colors.orange[900],

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:maw3ed/features/add_event/data/firebase_add_event_repo.dart';
-import 'package:maw3ed/features/add_event/domain/entities/event_model.dart';
+import 'package:maw3ed/core/entities/event_model.dart';
+import 'package:maw3ed/features/add_event/data/local_notification_repo.dart';
 
 part 'add_event_state.dart';
 
@@ -39,9 +40,16 @@ class AddEventCubit extends Cubit<AddEventState> {
         location: location!,
       );
       await FirebaseAddEventRepo().addEvent(newEvent);
+      await LocalNotificationRepo.showScheduledNotificationAtASpecificTime(
+        title,
+        description,
+        eventDateTime
+      );
       emit(AddEventSuccess());
     } catch (e) {
       emit(AddEventFailure(e.toString().replaceAll('Exception: ', '')));
     }
   }
+
+  Future<void> notification() async {}
 }

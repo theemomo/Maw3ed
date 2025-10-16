@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:maw3ed/features/add_event/domain/entities/event_model.dart';
+import 'package:maw3ed/core/entities/event_model.dart';
 import 'package:maw3ed/features/home/domain/repos/home_repo.dart';
 
 class FirebaseHomeRepo implements HomeRepo {

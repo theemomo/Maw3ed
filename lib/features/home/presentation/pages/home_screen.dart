@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
-import 'package:maw3ed/features/add_event/presentation/pages/add_event_screen.dart';
 import 'package:maw3ed/features/home/presentation/cubits/home_cubit/home_cubit.dart';
 import 'package:maw3ed/features/home/presentation/widgets/today_content.dart';
 import 'package:maw3ed/generated/l10n.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

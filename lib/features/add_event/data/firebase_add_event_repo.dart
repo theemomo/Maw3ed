@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:maw3ed/features/add_event/domain/entities/event_model.dart';
+import 'package:maw3ed/core/entities/event_model.dart';
 import 'package:maw3ed/features/add_event/domain/repos/add_event_repo.dart';
 
 class FirebaseAddEventRepo extends AddEventRepo {
