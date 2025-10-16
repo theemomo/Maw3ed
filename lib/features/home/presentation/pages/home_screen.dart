@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
+import 'package:maw3ed/features/add_event/presentation/pages/add_event_screen.dart';
+import 'package:maw3ed/features/home/presentation/cubits/home_cubit/home_cubit.dart';
 import 'package:maw3ed/features/home/presentation/widgets/today_content.dart';
+import 'package:maw3ed/generated/l10n.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,13 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildTabButton(
-                  label: "Today",
+                  label: S.of(context).today,
                   isSelected: selectedTab == 0,
                   onTap: () => setState(() => selectedTab = 0),
                   context: context,
                 ),
                 _buildTabButton(
-                  label: "Calender",
+                  label: S.of(context).calender,
                   isSelected: selectedTab == 1,
                   onTap: () => setState(() => selectedTab = 1),
                   context: context,
@@ -38,7 +43,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 // add button
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AppRoutes.addEventRoute);
+                    Navigator.of(
+                      context,
+                    ).pushNamed(AppRoutes.addEventRoute).then((value) {
+                      if (!mounted) return;
+                      BlocProvider.of<HomeCubit>(context).getTodayEvents();
+                    });
+                    //   pushScreen(
+                    //   context,
+                    //   screen: const AddEventScreen(),
+                    //   withNavBar: false,
+                    //   pageTransitionAnimation: PageTransitionAnimation.fade,
+                    // );
                   },
                   style: ElevatedButton.styleFrom(
                     shadowColor: Colors.transparent,
@@ -81,12 +97,15 @@ class _HomeScreenState extends State<HomeScreen> {
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(20, 50),
         shadowColor: Colors.transparent,
-        side: const BorderSide(width: 0.7, color: Colors.grey),
+        side: BorderSide(
+          width: 0.7,
+          color: Theme.of(context).colorScheme.primary,
+        ),
         backgroundColor: isSelected
             ? Theme.of(context).colorScheme.primary
             : Theme.of(context).colorScheme.surface,
         foregroundColor: isSelected
-            ? Theme.of(context).colorScheme.onPrimary
+            ? Theme.of(context).colorScheme.surface
             : Theme.of(context).colorScheme.onSurface,
       ),
       child: Text(label),

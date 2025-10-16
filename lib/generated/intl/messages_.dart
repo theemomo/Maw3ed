@@ -22,15 +22,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "addEvent": MessageLookupByLibrary.simpleMessage("Add Event"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
+    "calender": MessageLookupByLibrary.simpleMessage("Calender"),
     "confirmPasswordFieldHint": MessageLookupByLibrary.simpleMessage(
       "Please Confirm Your Password",
     ),
     "confirmPasswordFieldLabel": MessageLookupByLibrary.simpleMessage(
       "Confirm Password",
     ),
+    "date": MessageLookupByLibrary.simpleMessage("Date"),
+    "description": MessageLookupByLibrary.simpleMessage("Description"),
     "dontHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Dont have any account?",
     ),
@@ -44,6 +48,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailFieldValidationError": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid email address",
     ),
+    "eventDate": MessageLookupByLibrary.simpleMessage("Event Date"),
+    "eventDescription": MessageLookupByLibrary.simpleMessage(
+      "Event Description",
+    ),
+    "eventLocation": MessageLookupByLibrary.simpleMessage("Event Location"),
+    "eventTime": MessageLookupByLibrary.simpleMessage("Event Time"),
+    "eventTitle": MessageLookupByLibrary.simpleMessage("Event Title"),
+    "home": MessageLookupByLibrary.simpleMessage("Home"),
     "introPage1Description": MessageLookupByLibrary.simpleMessage(
       "Manage all your appointments in one smart app. simple, organized, and always on time.",
     ),
@@ -62,7 +74,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "introPage3Title": MessageLookupByLibrary.simpleMessage(
       "Your Time, Your Way",
     ),
+    "location": MessageLookupByLibrary.simpleMessage("Location"),
     "loginScreenTitle": MessageLookupByLibrary.simpleMessage("Login"),
+    "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+    "maps": MessageLookupByLibrary.simpleMessage("Maps"),
     "nameFieldEmptyError": MessageLookupByLibrary.simpleMessage(
       "Please enter your name",
     ),
@@ -76,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameFieldOnlyLettersError": MessageLookupByLibrary.simpleMessage(
       "Name can only contain letters and spaces",
     ),
+    "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "passwordFieldDigitError": MessageLookupByLibrary.simpleMessage(
       "Password must contain at least one number",
     ),
@@ -98,8 +114,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordFieldUppercaseError": MessageLookupByLibrary.simpleMessage(
       "Password must contain at least one uppercase letter",
     ),
+    "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "registerScreenTitle": MessageLookupByLibrary.simpleMessage("Register"),
+    "selectDate": MessageLookupByLibrary.simpleMessage("Select Date"),
+    "selectLocation": MessageLookupByLibrary.simpleMessage("Select Location"),
+    "selectTime": MessageLookupByLibrary.simpleMessage("Select Time"),
+    "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
     "signUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
+    "time": MessageLookupByLibrary.simpleMessage("Time"),
+    "title": MessageLookupByLibrary.simpleMessage("Title"),
+    "today": MessageLookupByLibrary.simpleMessage("Today"),
   };
 }

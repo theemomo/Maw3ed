@@ -55,6 +55,7 @@ class AppTheme {
       colorScheme: const ColorScheme.dark(
         surface: Color(0xFF1E1E1E),
         primary: Color(0xFFE0E0E0),
+        onPrimary: Colors.grey,
         secondary: Color(0xFF2A2A2A),
         tertiary: Color(0xFF000000),
         inversePrimary: Color(0xFFFFFFFF),

@@ -4,5 +4,6 @@ class AppRoutes {
   static const String homeRoute = '/home';
   static const String addEventRoute = '/add-event';
   static const String selectLocationRoute = '/select-location';
+  static const String settingsRoute = '/settings';
 
 }

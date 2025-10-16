@@ -338,6 +338,136 @@ class S {
       args: [],
     );
   }
+
+  /// `Today`
+  String get today {
+    return Intl.message('Today', name: 'today', desc: '', args: []);
+  }
+
+  /// `Calender`
+  String get calender {
+    return Intl.message('Calender', name: 'calender', desc: '', args: []);
+  }
+
+  /// `Title`
+  String get title {
+    return Intl.message('Title', name: 'title', desc: '', args: []);
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message('Description', name: 'description', desc: '', args: []);
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message('Date', name: 'date', desc: '', args: []);
+  }
+
+  /// `Time`
+  String get time {
+    return Intl.message('Time', name: 'time', desc: '', args: []);
+  }
+
+  /// `Location`
+  String get location {
+    return Intl.message('Location', name: 'location', desc: '', args: []);
+  }
+
+  /// `Add Event`
+  String get addEvent {
+    return Intl.message('Add Event', name: 'addEvent', desc: '', args: []);
+  }
+
+  /// `Select Location`
+  String get selectLocation {
+    return Intl.message(
+      'Select Location',
+      name: 'selectLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event Title`
+  String get eventTitle {
+    return Intl.message('Event Title', name: 'eventTitle', desc: '', args: []);
+  }
+
+  /// `Event Description`
+  String get eventDescription {
+    return Intl.message(
+      'Event Description',
+      name: 'eventDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event Date`
+  String get eventDate {
+    return Intl.message('Event Date', name: 'eventDate', desc: '', args: []);
+  }
+
+  /// `Event Time`
+  String get eventTime {
+    return Intl.message('Event Time', name: 'eventTime', desc: '', args: []);
+  }
+
+  /// `Event Location`
+  String get eventLocation {
+    return Intl.message(
+      'Event Location',
+      name: 'eventLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Time`
+  String get selectTime {
+    return Intl.message('Select Time', name: 'selectTime', desc: '', args: []);
+  }
+
+  /// `Select Date`
+  String get selectDate {
+    return Intl.message('Select Date', name: 'selectDate', desc: '', args: []);
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message('Home', name: 'home', desc: '', args: []);
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message('Settings', name: 'settings', desc: '', args: []);
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message('Logout', name: 'logout', desc: '', args: []);
+  }
+
+  /// `Maps`
+  String get maps {
+    return Intl.message('Maps', name: 'maps', desc: '', args: []);
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message('Profile', name: 'profile', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

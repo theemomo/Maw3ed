@@ -22,15 +22,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "addEvent": MessageLookupByLibrary.simpleMessage("إضافة حدث"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "لديك حساب بالفعل؟",
     ),
+    "calender": MessageLookupByLibrary.simpleMessage("التقويم"),
     "confirmPasswordFieldHint": MessageLookupByLibrary.simpleMessage(
       "أعد إدخال كلمة المرور",
     ),
     "confirmPasswordFieldLabel": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور",
     ),
+    "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
+    "description": MessageLookupByLibrary.simpleMessage("الوصف"),
     "dontHaveAccount": MessageLookupByLibrary.simpleMessage("ليس لديك حساب؟"),
     "emailFieldEmptyError": MessageLookupByLibrary.simpleMessage(
       "يرجى إدخال البريد الإلكتروني",
@@ -44,6 +48,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailFieldValidationError": MessageLookupByLibrary.simpleMessage(
       "يرجى إدخال بريد إلكتروني صالح",
     ),
+    "eventDate": MessageLookupByLibrary.simpleMessage("تاريخ الحدث"),
+    "eventDescription": MessageLookupByLibrary.simpleMessage("وصف الحدث"),
+    "eventLocation": MessageLookupByLibrary.simpleMessage("موقع الحدث"),
+    "eventTime": MessageLookupByLibrary.simpleMessage("وقت الحدث"),
+    "eventTitle": MessageLookupByLibrary.simpleMessage("عنوان الحدث"),
+    "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "introPage1Description": MessageLookupByLibrary.simpleMessage(
       "قم بإدارة جميع مواعيدك في تطبيق ذكي واحد. بسيط، منظم، ودائمًا في الوقت المناسب.",
     ),
@@ -60,7 +70,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "خصص ألوان جدولك، نظّم أسبوعك، واجعل موعد يناسب أسلوب حياتك.",
     ),
     "introPage3Title": MessageLookupByLibrary.simpleMessage("وقتك، بطريقتك"),
+    "location": MessageLookupByLibrary.simpleMessage("الموقع"),
     "loginScreenTitle": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
+    "maps": MessageLookupByLibrary.simpleMessage("الخرائط"),
     "nameFieldEmptyError": MessageLookupByLibrary.simpleMessage(
       "يرجى إدخال الاسم",
     ),
@@ -72,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameFieldOnlyLettersError": MessageLookupByLibrary.simpleMessage(
       "يجب أن يحتوي الاسم على أحرف ومسافات فقط",
     ),
+    "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "passwordFieldDigitError": MessageLookupByLibrary.simpleMessage(
       "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
     ),
@@ -94,8 +108,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordFieldUppercaseError": MessageLookupByLibrary.simpleMessage(
       "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
     ),
+    "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "registerScreenTitle": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
+    "selectDate": MessageLookupByLibrary.simpleMessage("اختر التاريخ"),
+    "selectLocation": MessageLookupByLibrary.simpleMessage("اختر الموقع"),
+    "selectTime": MessageLookupByLibrary.simpleMessage("اختر الوقت"),
+    "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
     "signIn": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "signUp": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
+    "time": MessageLookupByLibrary.simpleMessage("الوقت"),
+    "title": MessageLookupByLibrary.simpleMessage("العنوان"),
+    "today": MessageLookupByLibrary.simpleMessage("اليوم"),
   };
 }

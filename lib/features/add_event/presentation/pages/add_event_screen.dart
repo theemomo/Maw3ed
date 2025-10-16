@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
 import 'package:maw3ed/core/widgets/app_button.dart';
 import 'package:maw3ed/core/widgets/text_field_widget.dart';
+import 'package:maw3ed/features/add_event/presentation/cubits/add_event_cubit/add_event_cubit.dart';
+import 'package:maw3ed/generated/l10n.dart';
 
 class AddEventScreen extends StatefulWidget {
   const AddEventScreen({super.key});
@@ -26,7 +29,7 @@ class _AddEventScreenState extends State<AddEventScreen>
     super.build(context);
     final Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(top: 70.0),
+      padding: const EdgeInsets.only(top: 0.0),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(title: const Text("Add Event")),
@@ -36,9 +39,9 @@ class _AddEventScreenState extends State<AddEventScreen>
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Title",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                S.of(context).title,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: size.height * 0.01),
               TextFieldWidget(
@@ -49,15 +52,15 @@ class _AddEventScreenState extends State<AddEventScreen>
                   FocusScope.of(context).requestFocus(_descriptionFocusNode);
                 },
                 hint: "",
-                label: "Event Title",
+                label: S.of(context).eventTitle,
                 validator: (value) {
                   return null;
                 },
               ),
               SizedBox(height: size.height * 0.03),
-              const Text(
-                "Description",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                S.of(context).description,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: size.height * 0.01),
               TextFieldWidget(
@@ -68,7 +71,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                   _descriptionFocusNode.unfocus();
                 },
                 hint: "",
-                label: "Event Description",
+                label: S.of(context).eventDescription,
                 validator: (value) {
                   return null;
                 },
@@ -77,7 +80,7 @@ class _AddEventScreenState extends State<AddEventScreen>
               SizedBox(height: size.height * 0.03),
               ListTile(
                 leading: const Icon(Icons.calendar_month),
-                title: const Text("Event Date"),
+                title: Text(S.of(context).eventDate),
                 trailing: TextButton(
                   onPressed: () {
                     _selectDate();
@@ -85,26 +88,26 @@ class _AddEventScreenState extends State<AddEventScreen>
                   child: Text(
                     selectedDate != null
                         ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                        : 'Select Date',
+                        : S.of(context).selectDate,
                   ),
                 ),
               ),
               ListTile(
                 leading: const Icon(Icons.access_time),
-                title: const Text("Event Time"),
+                title: Text(S.of(context).eventTime),
                 trailing: TextButton(
                   onPressed: _selectTime,
                   child: Text(
                     selectedTime != null
                         ? '${selectedTime!.hour}:${selectedTime!.minute}'
-                        : 'Select Time',
+                        : S.of(context).selectTime,
                   ),
                 ),
               ),
               SizedBox(height: size.height * 0.03),
-              const Text(
-                "Location",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                S.of(context).location,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: size.height * 0.01),
               Container(
@@ -120,7 +123,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                   title: Text(
                     location != null
                         ? '${location!.latitude.toStringAsFixed(4)}, ${location!.longitude.toStringAsFixed(4)}'
-                        : 'Select Location',
+                        : S.of(context).selectLocation,
                   ),
 
                   trailing: TextButton(
@@ -139,7 +142,77 @@ class _AddEventScreenState extends State<AddEventScreen>
                 ),
               ),
               const Spacer(),
-              AppButton(title: 'Add Event', onPressed: () {}),
+              BlocConsumer<AddEventCubit, AddEventState>(
+                listener: (context, state) {
+                  if (state is AddEventFailure) {
+                    // Show error SnackBar with clear visibility
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text(state.errorMessage),
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.red[900],
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                  } else if (state is AddEventSuccess) {
+                    // Show success SnackBar before popping
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        const SnackBar(
+                          content: Text('Event added successfully!'),
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.green,
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+
+                    // Wait a bit so user sees success, then pop
+                    Future.delayed(const Duration(seconds: 1), () {
+                      if (Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop();
+                      }
+                    });
+                  }
+                },
+                builder: (context, state) {
+                  if (state is AddEventLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                  }
+
+                  return AppButton(
+                    title: S.of(context).addEvent,
+                    onPressed: () {
+                      if (_titleController.text.isEmpty ||
+                          _descriptionController.text.isEmpty ||
+                          selectedDate == null ||
+                          selectedTime == null ||
+                          location == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                           SnackBar(
+                            content: const Text('Please fill in all fields'),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.orange[900],
+                          ),
+                        );
+                        return;
+                      }
+
+                      context.read<AddEventCubit>().addEvent(
+                        _titleController.text,
+                        _descriptionController.text,
+                        selectedDate,
+                        selectedTime,
+                        location,
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -148,11 +221,13 @@ class _AddEventScreenState extends State<AddEventScreen>
   }
 
   Future<void> _selectDate() async {
-    final DateTime? pickedDate = await showDatePicker(
+    final now = DateTime.now();
+
+    DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime(2021, 7, 25),
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2022),
+      initialDate: DateTime(now.year, now.month, now.day),
+      firstDate: DateTime(now.year, now.month, now.day), // today
+      lastDate: DateTime(now.year + 5, now.month, now.day), // 5 years from now
     );
 
     // You can safely use setState() for purely local UI changes that:

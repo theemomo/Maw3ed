@@ -1,11 +1,8 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-import 'package:maw3ed/core/route/app_routes.dart';
 
 class SelectLocationScreen extends StatefulWidget {
   const SelectLocationScreen({super.key});
@@ -69,6 +66,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
 
       // Listen for continuous updates
       location.onLocationChanged.listen((newLocation) {
+        if (!mounted) return;
         setState(() {
           currentLocation = newLocation;
         });
@@ -90,42 +88,6 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
         ),
       );
     });
-    // _getRoute(point);
-  }
-
-  // Get Route
-  Future<void> _getRoute(LatLng destination) async {
-    if (currentLocation == null) return;
-    final start = LatLng(
-      currentLocation!.latitude!,
-      currentLocation!.longitude!,
-    );
-    final response = await http.get(
-      Uri.parse(
-        'https://api.openrouteservice.org/v2/directions/driving-car?api_key=$apiKey&start=${start.longitude},${start.latitude}&end=${destination.longitude},${destination.latitude}',
-      ),
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final List<dynamic> coords =
-          data['features'][0]['geometry']['coordinates'];
-      setState(() {
-        routePoints = coords
-            .map((coord) => LatLng(coord[1], coord[0]))
-            .toList();
-        markers.add(
-          Marker(
-            point: destination,
-            width: 80,
-            height: 80,
-            child: const Icon(Icons.location_on, color: Colors.red, size: 30),
-          ),
-        );
-      });
-    } else {
-      debugPrint('Failed to fetch route!');
-    }
   }
 
   @override
