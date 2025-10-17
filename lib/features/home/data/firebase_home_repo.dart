@@ -29,4 +29,25 @@ class FirebaseHomeRepo implements HomeRepo {
     }
     return [];
   }
+
+  @override
+  Future<List<EventModel>> getEventsForSpecificDay(DateTime date) async {
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .collection('events')
+          .where('date', isEqualTo: DateTime(date.year, date.month, date.day).millisecondsSinceEpoch)
+          .get();
+
+      final events = snapshot.docs.map((doc) {
+        return EventModel.fromMap(doc.data());
+      }).toList();
+
+      return events; // If there is no events the function will return []
+    } catch (e) {
+      debugPrint('failed fetching events: ${e.toString()}');
+    }
+    return [];
+  }
 }

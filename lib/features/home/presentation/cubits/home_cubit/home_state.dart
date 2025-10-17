@@ -4,14 +4,14 @@ sealed class HomeState {}
 
 final class HomeInitial extends HomeState {}
 
-final class FetchingTodayLoading extends HomeState {}
+final class FetchingEventsLoading extends HomeState {}
 
-final class FetchingTodayLoaded extends HomeState {
+final class FetchingEventsLoaded extends HomeState {
   final List<EventModel> events;
-  FetchingTodayLoaded(this.events);
+  FetchingEventsLoaded(this.events);
 }
 
-final class FetchingTodayError extends HomeState {
+final class FetchingEventsError extends HomeState {
   final String message;
-  FetchingTodayError(this.message);
+  FetchingEventsError(this.message);
 }

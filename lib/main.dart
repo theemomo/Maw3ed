@@ -13,9 +13,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
   await Firebase.initializeApp();
-  
+
   final themeCubit = ThemeModeCubit();
   Future.wait([themeCubit.init(), LocalNotificationRepo.init()]);
 

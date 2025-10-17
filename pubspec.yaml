@@ -50,6 +50,7 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^6.1.0
   shared_preferences: ^2.5.3
   smooth_page_indicator: ^1.2.1
+  table_calendar: ^3.2.0
   timezone: ^0.10.1
 
 dev_dependencies:

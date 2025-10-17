@@ -1,98 +1,114 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
 import 'package:maw3ed/features/home/presentation/cubits/home_cubit/home_cubit.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class TodayContent extends StatelessWidget {
-  const TodayContent({super.key});
+class CalenderContent extends StatefulWidget {
+  const CalenderContent({super.key});
+
+  @override
+  State<CalenderContent> createState() => _CalenderContentState();
+}
+
+class _CalenderContentState extends State<CalenderContent> {
+  late DateTime _focusedDay;
+  DateTime? _selectedDay;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusedDay = DateTime.now();
+    _selectedDay = _focusedDay;
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return BlocProvider(
-      create: (context) => HomeCubit()..getTodayEvents(),
+      create: (context) => HomeCubit()..getEventsForSpecificDay(DateTime.now()),
       child: Builder(
         builder: (context) {
-          return RefreshIndicator(
-            onRefresh: () {
-              return BlocProvider.of<HomeCubit>(context).getTodayEvents();
-            },
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: StreamBuilder<DateTime>(
-                    stream: Stream.periodic(
-                      const Duration(seconds: 1),
-                      (_) => DateTime.now(),
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  TableCalendar(
+                    focusedDay: _focusedDay,
+                    firstDay: DateTime.utc(2010, 1, 1),
+                    lastDay: DateTime(
+                      _focusedDay.year + 10,
+                      _focusedDay.month,
+                      _focusedDay.day,
                     ),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        // While waiting, show a small fade-in shimmer or spinner
-                        return const AnimatedOpacity(
-                          duration: Duration(milliseconds: 500),
-                          opacity: 0.0,
-                          child: SizedBox(),
-                        );
-                      }
 
-                      final now = snapshot.data!;
-                      final formattedTime = DateFormat('hh.mm').format(now);
-                      final formattedMonth = DateFormat(
-                        'd MMM yyyy',
-                      ).format(now);
-                      final formattedDay = DateFormat('EEEE').format(now);
+                    // Calendar behavior
+                    calendarFormat: CalendarFormat.month,
+                    startingDayOfWeek: StartingDayOfWeek.saturday,
+                    availableGestures: AvailableGestures.all,
+                    weekendDays: const [DateTime.friday],
 
-                      return AnimatedOpacity(
-                        opacity: 1.0,
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.easeInOut,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              formattedDay,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              formattedTime,
-                              style: const TextStyle(
-                                fontSize: 70,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              formattedMonth.toUpperCase(),
-                              style: const TextStyle(
-                                fontSize: 55,
-                                fontWeight: FontWeight.bold,
-                                height: 0.8,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                    // Selected day logic
+                    selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+                    onDaySelected: (selectedDay, focusedDay) {
+                      setState(() {
+                        _selectedDay = selectedDay;
+                        _focusedDay = focusedDay;
+                      });
+                      BlocProvider.of<HomeCubit>(
+                        context,
+                      ).getEventsForSpecificDay(selectedDay);
+                      // print(selectedDay);
                     },
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 10),
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
+
+                    // Styling
+                    headerStyle: HeaderStyle(
+                      titleCentered: true,
+                      formatButtonVisible: false,
+                      titleTextStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      leftChevronIcon: Icon(
+                        Icons.chevron_left,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      rightChevronIcon: Icon(
+                        Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
+                    daysOfWeekStyle: DaysOfWeekStyle(
+                      weekendStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    calendarStyle: CalendarStyle(
+                      isTodayHighlighted: true,
+                      todayDecoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      selectedDecoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      selectedTextStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      weekendTextStyle: const TextStyle(
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                  ),
+
+                  Expanded(
                     child: SingleChildScrollView(
                       child: BlocBuilder<HomeCubit, HomeState>(
                         buildWhen: (previous, current) =>
@@ -106,7 +122,7 @@ class TodayContent extends StatelessWidget {
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(height: size.height * 0.1),
+                                  SizedBox(height: size.height * 0.05),
                                   Opacity(
                                     opacity: 0.7,
                                     child: CachedNetworkImage(
@@ -117,7 +133,7 @@ class TodayContent extends StatelessWidget {
                                   ),
                                   SizedBox(height: size.height * 0.02),
                                   Text(
-                                    "No Events For Today",
+                                    "No Events For This Day",
                                     style: Theme.of(
                                       context,
                                     ).textTheme.titleMedium,
@@ -168,8 +184,7 @@ class TodayContent extends StatelessWidget {
                                     child: Container(
                                       padding: const EdgeInsets.all(20),
                                       margin: const EdgeInsets.symmetric(
-                                        vertical: 10,
-                                        horizontal: 20,
+                                        vertical: 15,
                                       ),
                                       decoration: BoxDecoration(
                                         color:
@@ -178,9 +193,10 @@ class TodayContent extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(20),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(
-                                              0.4,
-                                            ),
+                                            color:
+                                                eventColors[index %
+                                                        eventColors.length]
+                                                    .withOpacity(0.4),
                                             blurRadius: 12,
                                             offset: const Offset(4, 6),
                                           ),
@@ -190,15 +206,40 @@ class TodayContent extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
+                                          Text(
+                                            state.events[index].title,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineSmall!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                  color: const Color(
+                                                    0xFF1E1E1E,
+                                                  ),
+                                                ),
+                                          ),
+                                          Text(
+                                            state.events[index].description,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: const Color(
+                                                    0xFF1E1E1E,
+                                                  ),
+                                                ),
+                                          ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                state.events[index].title,
+                                                "${state.events[index].date.day} / ${state.events[index].date.month} / ${state.events[index].date.year}",
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headlineSmall!
+                                                    .bodyLarge!
                                                     .copyWith(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -237,48 +278,6 @@ class TodayContent extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-                                          Text(
-                                            state.events[index].description,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: const Color(
-                                                    0xFF1E1E1E,
-                                                  ),
-                                                ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "${state.events[index].date.day} / ${state.events[index].date.month} / ${state.events[index].date.year}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge!
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: const Color(
-                                                        0xFF1E1E1E,
-                                                      ),
-                                                    ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {},
-                                                child: const CircleAvatar(
-                                                  radius: 35,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  backgroundImage: NetworkImage(
-                                                    'https://cdn-icons-png.flaticon.com/512/14984/14984838.png',
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -294,8 +293,8 @@ class TodayContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

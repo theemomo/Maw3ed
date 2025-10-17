@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
-import 'package:maw3ed/features/home/presentation/cubits/home_cubit/home_cubit.dart';
+import 'package:maw3ed/features/home/presentation/widgets/calender_content.dart';
 import 'package:maw3ed/features/home/presentation/widgets/today_content.dart';
 import 'package:maw3ed/generated/l10n.dart';
 
@@ -38,21 +37,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () => setState(() => selectedTab = 1),
                   context: context,
                 ),
-                // add button
+                // Add button
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).pushNamed(AppRoutes.addEventRoute).then((value) {
-                      if (!mounted) return;
-                      BlocProvider.of<HomeCubit>(context).getTodayEvents();
-                    });
-                    //   pushScreen(
-                    //   context,
-                    //   screen: const AddEventScreen(),
-                    //   withNavBar: false,
-                    //   pageTransitionAnimation: PageTransitionAnimation.fade,
-                    // );
+                    Navigator.of(context).pushNamed(AppRoutes.addEventRoute);
                   },
                   style: ElevatedButton.styleFrom(
                     shadowColor: Colors.transparent,
@@ -62,21 +50,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: Theme.of(context).colorScheme.primary,
                   ),
-
                   child: const Icon(Icons.add),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 20),
-
-          // Changing Content
           Expanded(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               child: selectedTab == 0
                   ? const TodayContent()
-                  : _calenderContent(),
+                  : const CalenderContent(),
             ),
           ),
         ],
@@ -107,17 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
             : Theme.of(context).colorScheme.onSurface,
       ),
       child: Text(label),
-    );
-  }
-
-  Widget _calenderContent() {
-    return const Column(
-      key: ValueKey('calender'),
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.calendar_today, size: 60),
-        Text("Tomorrow’s schedule and plans"),
-      ],
     );
   }
 }

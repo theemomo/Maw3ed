@@ -174,7 +174,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                     // Wait a bit so user sees success, then pop
                     Future.delayed(const Duration(seconds: 1), () {
                       if (Navigator.of(context).canPop()) {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pushReplacementNamed(AppRoutes.homeRoute);
                       }
                     });
                   }

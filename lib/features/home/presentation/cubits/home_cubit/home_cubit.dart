@@ -6,14 +6,24 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
-
+  final FirebaseHomeRepo _firestore = FirebaseHomeRepo();
   Future<void> getTodayEvents() async {
-    emit(FetchingTodayLoading());
+    emit(FetchingEventsLoading());
     try {
-      final events = await FirebaseHomeRepo().getTodayEvents();
-      emit(FetchingTodayLoaded(events));
+      final todayEvents = await _firestore.getTodayEvents();
+      emit(FetchingEventsLoaded(todayEvents));
     } catch (e) {
-      emit(FetchingTodayError(e.toString()));
+      emit(FetchingEventsError(e.toString()));
+    }
+  }
+
+  Future<void> getEventsForSpecificDay(DateTime date) async {
+    emit(FetchingEventsLoading());
+    try {
+      final events = await _firestore.getEventsForSpecificDay(date);
+      emit(FetchingEventsLoaded(events));
+    } catch (e) {
+      emit(FetchingEventsError(e.toString()));
     }
   }
 }
