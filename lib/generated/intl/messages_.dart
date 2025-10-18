@@ -33,7 +33,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPasswordFieldLabel": MessageLookupByLibrary.simpleMessage(
       "Confirm Password",
     ),
+    "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
+    "dataAndTime": MessageLookupByLibrary.simpleMessage("Date & Time"),
     "date": MessageLookupByLibrary.simpleMessage("Date"),
+    "deleteEvent": MessageLookupByLibrary.simpleMessage("Delete Event"),
     "description": MessageLookupByLibrary.simpleMessage("Description"),
     "dontHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Dont have any account?",
@@ -48,13 +51,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailFieldValidationError": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid email address",
     ),
+    "eventAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Event added successfully! You will get a reminder notification.",
+    ),
     "eventDate": MessageLookupByLibrary.simpleMessage("Event Date"),
+    "eventDeleted": MessageLookupByLibrary.simpleMessage(
+      "Event deleted successfully",
+    ),
     "eventDescription": MessageLookupByLibrary.simpleMessage(
       "Event Description",
     ),
     "eventLocation": MessageLookupByLibrary.simpleMessage("Event Location"),
+    "eventMustBeInFuture": MessageLookupByLibrary.simpleMessage(
+      "Event must be scheduled for a future time.",
+    ),
     "eventTime": MessageLookupByLibrary.simpleMessage("Event Time"),
     "eventTitle": MessageLookupByLibrary.simpleMessage("Event Title"),
+    "fillAllFields": MessageLookupByLibrary.simpleMessage(
+      "Please fill in all fields",
+    ),
+    "findYourEventInMaps": MessageLookupByLibrary.simpleMessage(
+      "Find your event in the maps",
+    ),
+    "goToEvent": MessageLookupByLibrary.simpleMessage("Go To Your Event"),
     "home": MessageLookupByLibrary.simpleMessage("Home"),
     "introPage1Description": MessageLookupByLibrary.simpleMessage(
       "Manage all your appointments in one smart app. simple, organized, and always on time.",
@@ -74,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "introPage3Title": MessageLookupByLibrary.simpleMessage(
       "Your Time, Your Way",
     ),
+    "language": MessageLookupByLibrary.simpleMessage("Language"),
     "location": MessageLookupByLibrary.simpleMessage("Location"),
     "loginScreenTitle": MessageLookupByLibrary.simpleMessage("Login"),
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
@@ -90,6 +110,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "nameFieldOnlyLettersError": MessageLookupByLibrary.simpleMessage(
       "Name can only contain letters and spaces",
+    ),
+    "noEventsFotToday": MessageLookupByLibrary.simpleMessage(
+      "No Events For Today",
     ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "passwordFieldDigitError": MessageLookupByLibrary.simpleMessage(

@@ -1,125 +1,209 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:maw3ed/core/route/app_routes.dart';
-import 'package:maw3ed/features/home/presentation/cubits/home_cubit/home_cubit.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
+import 'package:maw3ed/features/map/presentation/cubit/map_cubit.dart';
 import 'package:maw3ed/generated/l10n.dart';
-import 'package:table_calendar/table_calendar.dart';
 
-class CalenderContent extends StatefulWidget {
-  const CalenderContent({super.key});
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
 
   @override
-  State<CalenderContent> createState() => _CalenderContentState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
-class _CalenderContentState extends State<CalenderContent> {
-  late DateTime _focusedDay;
-  DateTime? _selectedDay;
+class _MapScreenState extends State<MapScreen> {
+  String apiKey =
+      'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjM4MWRjYjFmZjNkMjQ4YTZhMDZhMDljOGNlMWQ5MzczIiwiaCI6Im11cm11cjY0In0=';
+  final MapController _mapController = MapController();
+  List<Marker> markers = [];
+  LocationData? currentLocation;
+  LatLng? selectedLocation;
+  List<LatLng> routePoints = [];
 
   @override
   void initState() {
     super.initState();
-    _focusedDay = DateTime.now();
-    _selectedDay = _focusedDay;
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    // Check if service is enabled
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    // Check permissions
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    try {
+      LocationData userLocation = await location.getLocation();
+      setState(() {
+        currentLocation = userLocation;
+        markers.add(
+          Marker(
+            width: 80,
+            height: 80,
+            point: LatLng(userLocation.latitude!, userLocation.longitude!),
+            child: const Icon(Icons.my_location, color: Colors.blue, size: 20),
+          ),
+        );
+      });
+
+      // Listen for continuous updates
+      location.onLocationChanged.listen((newLocation) {
+        if (!mounted) return;
+        setState(() {
+          currentLocation = newLocation;
+        });
+      });
+    } catch (e) {
+      debugPrint("Error fetching location: $e");
+    }
+  }
+
+  void _addDestinationMarker(LatLng point) {
+    setState(() {
+      markers = [markers.first]; // my location
+      markers.add(
+        Marker(
+          width: 80,
+          height: 80,
+          point: point,
+          child: const Icon(Icons.location_on, color: Colors.red, size: 30),
+        ),
+      );
+    });
+
+    _getRoute(point);
+  }
+
+  // Get Route
+  Future<void> _getRoute(LatLng destination) async {
+    if (currentLocation == null) return;
+    final start = LatLng(
+      currentLocation!.latitude!,
+      currentLocation!.longitude!,
+    );
+    final response = await http.get(
+      Uri.parse(
+        'https://api.openrouteservice.org/v2/directions/driving-car?api_key=$apiKey&start=${start.longitude},${start.latitude}&end=${destination.longitude},${destination.latitude}',
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List<dynamic> coords =
+          data['features'][0]['geometry']['coordinates'];
+      setState(() {
+        routePoints = coords
+            .map((coord) => LatLng(coord[1], coord[0]))
+            .toList();
+        markers.add(
+          Marker(
+            point: destination,
+            width: 80,
+            height: 80,
+            child: const Icon(Icons.location_on, color: Colors.red, size: 30),
+          ),
+        );
+      });
+    } else {
+      debugPrint('Failed to fetch route!');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return BlocProvider(
-      create: (context) => HomeCubit()..getEventsForSpecificDay(DateTime.now()),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
+      create: (context) => MapCubit()..getAllEvents(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            S.of(context).findYourEventInMaps,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          actions: const [],
+          leading: const Text(""),
+          centerTitle: true,
+        ),
+        body: currentLocation == null
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
                 children: [
-                  TableCalendar(
-                    focusedDay: _focusedDay,
-                    firstDay: DateTime.utc(2010, 1, 1),
-                    lastDay: DateTime(
-                      _focusedDay.year + 10,
-                      _focusedDay.month,
-                      _focusedDay.day,
-                    ),
-
-                    // Calendar behavior
-                    calendarFormat: CalendarFormat.month,
-                    startingDayOfWeek: StartingDayOfWeek.saturday,
-                    availableGestures: AvailableGestures.all,
-                    weekendDays: const [DateTime.friday],
-
-                    // Selected day logic
-                    selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
-                    onDaySelected: (selectedDay, focusedDay) {
-                      setState(() {
-                        _selectedDay = selectedDay;
-                        _focusedDay = focusedDay;
-                      });
-                      BlocProvider.of<HomeCubit>(
-                        context,
-                      ).getEventsForSpecificDay(selectedDay);
-                      // print(selectedDay);
-                    },
-
-                    // Styling
-                    headerStyle: HeaderStyle(
-                      titleCentered: true,
-                      formatButtonVisible: false,
-                      titleTextStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      leftChevronIcon: Icon(
-                        Icons.chevron_left,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      rightChevronIcon: Icon(
-                        Icons.chevron_right,
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 2,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                    daysOfWeekStyle: DaysOfWeekStyle(
-                      weekendStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
+                    margin: const EdgeInsets.only(right: 15, left: 15),
+                    width: size.width,
+                    height: size.height * 0.4,
+                    child: FlutterMap(
+                      mapController: _mapController,
+                      options: MapOptions(
+                        initialCenter: LatLng(
+                          currentLocation!.latitude!,
+                          currentLocation!.longitude!,
+                        ),
+                        initialZoom: 15,
+                        onTap: (tapPosition, point) {},
                       ),
-                    ),
-                    calendarStyle: CalendarStyle(
-                      isTodayHighlighted: true,
-                      todayDecoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                      ),
-                      selectedDecoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      selectedTextStyle:  TextStyle(
-                        color: Theme.of(context).colorScheme.surface,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      weekendTextStyle: const TextStyle(
-                        color: Colors.redAccent,
-                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          subdomains: const ['a', 'b', 'c'],
+                          userAgentPackageName: 'com.example.maps',
+                        ),
+                        MarkerLayer(markers: markers),
+                        if (routePoints.isNotEmpty)
+                          PolylineLayer(
+                            polylines: [
+                              Polyline(
+                                points: routePoints,
+                                strokeWidth: 4,
+                                color: Colors.blue,
+                              ),
+                            ],
+                          ),
+                      ],
                     ),
                   ),
-
                   Expanded(
                     child: SingleChildScrollView(
-                      child: BlocBuilder<HomeCubit, HomeState>(
+                      child: BlocBuilder<MapCubit, MapState>(
                         buildWhen: (previous, current) =>
-                            current is FetchingEventsLoading ||
-                            current is FetchingEventsLoaded,
+                            current is GetEventsLoading ||
+                            current is GetEventsLoaded,
                         builder: (context, state) {
-                          if (state is FetchingEventsLoading) {
+                          if (state is GetEventsLoading) {
                             return const SizedBox();
-                          } else if (state is FetchingEventsLoaded) {
-                            if (state.events.isEmpty) {
+                          } else if (state is GetEventsLoaded) {
+                            if (state.userEvents.isEmpty) {
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -145,7 +229,7 @@ class _CalenderContentState extends State<CalenderContent> {
                               return ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: state.events.length,
+                                itemCount: state.userEvents.length,
                                 itemBuilder: (context, index) {
                                   final List<Color> eventColors = [
                                     const Color(0xFFC9C3E5),
@@ -173,20 +257,30 @@ class _CalenderContentState extends State<CalenderContent> {
                                     builder: (context, constraints) {
                                       return GestureDetector(
                                         onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                            AppRoutes.eventDetailsRoute,
-                                            arguments: {
-                                              'backgroundColor':
-                                                  eventColors[index %
-                                                      eventColors.length],
-                                              'event': state.events[index],
-                                            },
+                                          _addDestinationMarker(
+                                            state.userEvents[index].location,
                                           );
+                                          if (currentLocation != null) {
+                                            _mapController.move(
+                                              LatLng(
+                                                state
+                                                    .userEvents[index]
+                                                    .location
+                                                    .latitude,
+                                                state
+                                                    .userEvents[index]
+                                                    .location
+                                                    .longitude,
+                                              ),
+                                              15,
+                                            );
+                                          }
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.all(20),
                                           margin: const EdgeInsets.symmetric(
                                             vertical: 15,
+                                            horizontal: 15,
                                           ),
                                           decoration: BoxDecoration(
                                             color:
@@ -203,23 +297,13 @@ class _CalenderContentState extends State<CalenderContent> {
                                                     30,
                                                   ),
                                                 ),
-                                            // boxShadow: [
-                                            //   BoxShadow(
-                                            //     color:
-                                            //         eventColors[index %
-                                            //                 eventColors.length]
-                                            //             .withOpacity(0.4),
-                                            //     blurRadius: 12,
-                                            //     offset: const Offset(4, 6),
-                                            //   ),
-                                            // ],
                                           ),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                state.events[index].title,
+                                                state.userEvents[index].title,
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                                 style: Theme.of(context)
@@ -235,7 +319,9 @@ class _CalenderContentState extends State<CalenderContent> {
                                                     ),
                                               ),
                                               Text(
-                                                state.events[index].description,
+                                                state
+                                                    .userEvents[index]
+                                                    .description,
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                                 style: Theme.of(context)
@@ -255,7 +341,7 @@ class _CalenderContentState extends State<CalenderContent> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "${state.events[index].date.day} / ${state.events[index].date.month} / ${state.events[index].date.year}",
+                                                    "${state.userEvents[index].date.day} / ${state.userEvents[index].date.month} / ${state.userEvents[index].date.year}",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodyLarge!
@@ -284,7 +370,7 @@ class _CalenderContentState extends State<CalenderContent> {
                                                           ),
                                                     ),
                                                     child: Text(
-                                                      '${state.events[index].time.hour.toString().padLeft(2, '0')}:${state.events[index].time.minute.toString().padLeft(2, '0')}',
+                                                      '${state.userEvents[index].time.hour.toString().padLeft(2, '0')}:${state.userEvents[index].time.minute.toString().padLeft(2, '0')}',
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .headlineSmall!
@@ -319,9 +405,17 @@ class _CalenderContentState extends State<CalenderContent> {
                   ),
                 ],
               ),
-            ),
-          );
-        },
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            if (currentLocation != null) {
+              _mapController.move(
+                LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+                15,
+              );
+            }
+          },
+          child: const Icon(Icons.my_location),
+        ),
       ),
     );
   }

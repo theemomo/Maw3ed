@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:maw3ed/core/entities/event_model.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
 import 'package:maw3ed/features/add_event/presentation/cubits/add_event_cubit/add_event_cubit.dart';
 import 'package:maw3ed/features/add_event/presentation/pages/add_event_screen.dart';
@@ -9,10 +8,10 @@ import 'package:maw3ed/features/add_event/presentation/pages/select_location_scr
 import 'package:maw3ed/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
 import 'package:maw3ed/features/auth/presentation/pages/login_screen.dart';
 import 'package:maw3ed/features/auth/presentation/pages/register_screen.dart';
+import 'package:maw3ed/features/event_details/presentation/cubit/event_details_cubit.dart';
 import 'package:maw3ed/features/event_details/presentation/pages/event_details_screen.dart';
 import 'package:maw3ed/features/event_details/presentation/pages/find_route_screen.dart';
 import 'package:maw3ed/features/navigation_bar/presentation/pages/custom_bottom_navbar.dart';
-import 'package:maw3ed/features/settings/pages/settings_screen.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
@@ -45,15 +44,19 @@ class AppRouter {
       case AppRoutes.selectLocationRoute:
         return fadeRoute(const SelectLocationScreen());
 
-      case AppRoutes.settingsRoute:
-        return fadeRoute(const SettingsScreen());
 
       case AppRoutes.eventDetailsRoute:
         final args = settings.arguments as Map;
         final event = args['event'];
         final backgroundColor = args['backgroundColor'];
         return fadeRoute(
-          EventDetailsScreen(event: event, backgroundColor: backgroundColor),
+          BlocProvider(
+            create: (context) => EventDetailsCubit(),
+            child: EventDetailsScreen(
+              event: event,
+              backgroundColor: backgroundColor,
+            ),
+          ),
         );
 
       case AppRoutes.findLocationRoute:

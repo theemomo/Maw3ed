@@ -369,6 +369,11 @@ class S {
     return Intl.message('Time', name: 'time', desc: '', args: []);
   }
 
+  /// `Date & Time`
+  String get dataAndTime {
+    return Intl.message('Date & Time', name: 'dataAndTime', desc: '', args: []);
+  }
+
   /// `Location`
   String get location {
     return Intl.message('Location', name: 'location', desc: '', args: []);
@@ -467,6 +472,96 @@ class S {
   /// `Profile`
   String get profile {
     return Intl.message('Profile', name: 'profile', desc: '', args: []);
+  }
+
+  /// `Event added successfully! You will get a reminder notification.`
+  String get eventAddedSuccessfully {
+    return Intl.message(
+      'Event added successfully! You will get a reminder notification.',
+      name: 'eventAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please fill in all fields`
+  String get fillAllFields {
+    return Intl.message(
+      'Please fill in all fields',
+      name: 'fillAllFields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event must be scheduled for a future time.`
+  String get eventMustBeInFuture {
+    return Intl.message(
+      'Event must be scheduled for a future time.',
+      name: 'eventMustBeInFuture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Events For Today`
+  String get noEventsFotToday {
+    return Intl.message(
+      'No Events For Today',
+      name: 'noEventsFotToday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go To Your Event`
+  String get goToEvent {
+    return Intl.message(
+      'Go To Your Event',
+      name: 'goToEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Event`
+  String get deleteEvent {
+    return Intl.message(
+      'Delete Event',
+      name: 'deleteEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event deleted successfully`
+  String get eventDeleted {
+    return Intl.message(
+      'Event deleted successfully',
+      name: 'eventDeleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find your event in the maps`
+  String get findYourEventInMaps {
+    return Intl.message(
+      'Find your event in the maps',
+      name: 'findYourEventInMaps',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark Mode`
+  String get darkMode {
+    return Intl.message('Dark Mode', name: 'darkMode', desc: '', args: []);
+  }
+
+  /// `Language`
+  String get language {
+    return Intl.message('Language', name: 'language', desc: '', args: []);
   }
 }
 

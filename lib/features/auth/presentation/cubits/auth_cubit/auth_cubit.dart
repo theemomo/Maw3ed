@@ -16,21 +16,34 @@ class AuthCubit extends Cubit<AuthState> {
       );
       emit(Authenticated(user: user));
     } catch (e) {
-      emit(AuthFailure(e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString()));
+      emit(
+        AuthFailure(
+          e is Exception
+              ? e.toString().replaceFirst('Exception: ', '')
+              : e.toString(),
+        ),
+      );
+      await Future.delayed(const Duration(milliseconds: 300));
+      emit(AuthInitial());
     }
   }
 
   Future<void> register(String name, String email, String password) async {
     try {
       emit(AuthLoading());
-      final AppUserModel user = await _firebaseAuth.registerWithEmailAndPassword(
-        name,
-        email,
-        password,
-      );
+      final AppUserModel user = await _firebaseAuth
+          .registerWithEmailAndPassword(name, email, password);
       emit(Authenticated(user: user));
     } catch (e) {
-      emit(AuthFailure(e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString()));
+      emit(
+        AuthFailure(
+          e is Exception
+              ? e.toString().replaceFirst('Exception: ', '')
+              : e.toString(),
+        ),
+      );
+      await Future.delayed(const Duration(milliseconds: 300));
+      emit(AuthInitial());
     }
   }
 

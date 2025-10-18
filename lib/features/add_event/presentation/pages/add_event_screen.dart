@@ -28,15 +28,21 @@ class _AddEventScreenState extends State<AddEventScreen>
   Widget build(BuildContext context) {
     super.build(context);
     final Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(top: 0.0),
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(title: const Text("Add Event")),
-        body: Padding(
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).addEvent,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -53,9 +59,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                 },
                 hint: "",
                 label: S.of(context).eventTitle,
-                validator: (value) {
-                  return null;
-                },
+                validator: (value) => null,
               ),
               SizedBox(height: size.height * 0.03),
               Text(
@@ -67,24 +71,17 @@ class _AddEventScreenState extends State<AddEventScreen>
                 maxLines: 4,
                 fieldController: _descriptionController,
                 fieldFocusNode: _descriptionFocusNode,
-                onFieldSubmitted: (value) {
-                  _descriptionFocusNode.unfocus();
-                },
+                onFieldSubmitted: (_) => _descriptionFocusNode.unfocus(),
                 hint: "",
                 label: S.of(context).eventDescription,
-                validator: (value) {
-                  return null;
-                },
+                validator: (value) => null,
               ),
-
               SizedBox(height: size.height * 0.03),
               ListTile(
                 leading: const Icon(Icons.calendar_month),
                 title: Text(S.of(context).eventDate),
                 trailing: TextButton(
-                  onPressed: () {
-                    _selectDate();
-                  },
+                  onPressed: _selectDate,
                   child: Text(
                     selectedDate != null
                         ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
@@ -99,7 +96,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                   onPressed: _selectTime,
                   child: Text(
                     selectedTime != null
-                        ? '${selectedTime!.hour}:${selectedTime!.minute}'
+                        ? '${selectedTime!.hour}:${selectedTime!.minute.toString().padLeft(2, '0')}'
                         : S.of(context).selectTime,
                   ),
                 ),
@@ -119,33 +116,27 @@ class _AddEventScreenState extends State<AddEventScreen>
                 ),
                 child: ListTile(
                   leading: const Icon(Icons.location_on),
-
                   title: Text(
                     location != null
                         ? '${location!.latitude.toStringAsFixed(4)}, ${location!.longitude.toStringAsFixed(4)}'
                         : S.of(context).selectLocation,
                   ),
-
                   trailing: TextButton(
                     onPressed: () async {
-                      final result = await Navigator.of(
-                        context,
-                      ).pushNamed(AppRoutes.selectLocationRoute);
+                      final result = await Navigator.of(context)
+                          .pushNamed(AppRoutes.selectLocationRoute);
                       if (result != null && result is LatLng) {
-                        setState(() {
-                          location = result;
-                        });
+                        setState(() => location = result);
                       }
                     },
                     child: const Icon(Icons.arrow_forward_ios),
                   ),
                 ),
               ),
-              const Spacer(),
+              SizedBox(height: size.height * 0.05),
               BlocConsumer<AddEventCubit, AddEventState>(
                 listener: (context, state) {
                   if (state is AddEventFailure) {
-                    // Show error SnackBar with clear visibility
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(
@@ -157,24 +148,23 @@ class _AddEventScreenState extends State<AddEventScreen>
                         ),
                       );
                   } else if (state is AddEventSuccess) {
-                    // Show success SnackBar before popping
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(
-                        const SnackBar(
+                         SnackBar(
                           content: Text(
-                            'Event added successfully!, You will get a notification you remember your Maw\'ed',
+                            S.of(context).eventAddedSuccessfully,
                           ),
                           behavior: SnackBarBehavior.floating,
                           backgroundColor: Colors.green,
-                          duration: Duration(seconds: 1),
+                          duration: const Duration(seconds: 1),
                         ),
                       );
 
-                    // Wait a bit so user sees success, then pop
                     Future.delayed(const Duration(seconds: 1), () {
                       if (Navigator.of(context).canPop()) {
-                        Navigator.of(context).pushReplacementNamed(AppRoutes.homeRoute);
+                        Navigator.of(context)
+                            .pushReplacementNamed(AppRoutes.homeRoute);
                       }
                     });
                   }
@@ -196,7 +186,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                           location == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: const Text('Please fill in all fields'),
+                            content:  Text(S.of(context).fillAllFields),
                             behavior: SnackBarBehavior.floating,
                             backgroundColor: Colors.orange[900],
                           ),
@@ -205,12 +195,13 @@ class _AddEventScreenState extends State<AddEventScreen>
                       }
 
                       context.read<AddEventCubit>().addEvent(
-                        _titleController.text,
-                        _descriptionController.text,
-                        selectedDate,
-                        selectedTime,
-                        location,
-                      );
+                            _titleController.text,
+                            _descriptionController.text,
+                            selectedDate,
+                            selectedTime,
+                            location,
+                            context
+                          );
                     },
                   );
                 },
@@ -224,31 +215,25 @@ class _AddEventScreenState extends State<AddEventScreen>
 
   Future<void> _selectDate() async {
     final now = DateTime.now();
-
-    DateTime? pickedDate = await showDatePicker(
+    final pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime(now.year, now.month, now.day),
-      firstDate: DateTime(now.year, now.month, now.day), // today
-      lastDate: DateTime(now.year + 5, now.month, now.day), // 5 years from now
+      initialDate: now,
+      firstDate: now,
+      lastDate: DateTime(now.year + 5),
     );
-
-    // You can safely use setState() for purely local UI changes that:
-    // Don’t affect global or shared state
-    // Don’t need to persist across screens
-    // Are only temporary visual updates
-    setState(() {
-      selectedDate = pickedDate;
-    });
+    if (pickedDate != null) {
+      setState(() => selectedDate = pickedDate);
+    }
   }
 
   Future<void> _selectTime() async {
-    final TimeOfDay? pickedTime = await showTimePicker(
+    final pickedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    setState(() {
-      selectedTime = pickedTime;
-    });
+    if (pickedTime != null) {
+      setState(() => selectedTime = pickedTime);
+    }
   }
 
   @override

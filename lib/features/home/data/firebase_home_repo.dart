@@ -20,7 +20,7 @@ class FirebaseHomeRepo implements HomeRepo {
           .get();
 
       final events = snapshot.docs.map((doc) {
-        return EventModel.fromMap(doc.data());
+        return EventModel.fromMap(doc.data()).copyWith(uId: doc.id);
       }).toList();
 
       return events; // If there is no events the function will return []
@@ -41,7 +41,7 @@ class FirebaseHomeRepo implements HomeRepo {
           .get();
 
       final events = snapshot.docs.map((doc) {
-        return EventModel.fromMap(doc.data());
+        return EventModel.fromMap(doc.data()).copyWith(uId: doc.id);
       }).toList();
 
       return events; // If there is no events the function will return []

@@ -22,7 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "addEvent": MessageLookupByLibrary.simpleMessage("إضافة حدث"),
+    "addEvent": MessageLookupByLibrary.simpleMessage("إضافة موعد"),
     "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
       "لديك حساب بالفعل؟",
     ),
@@ -33,7 +33,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPasswordFieldLabel": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور",
     ),
+    "darkMode": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),
+    "dataAndTime": MessageLookupByLibrary.simpleMessage("التاريخ والوقت"),
     "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
+    "deleteEvent": MessageLookupByLibrary.simpleMessage("حذف الموعد"),
     "description": MessageLookupByLibrary.simpleMessage("الوصف"),
     "dontHaveAccount": MessageLookupByLibrary.simpleMessage("ليس لديك حساب؟"),
     "emailFieldEmptyError": MessageLookupByLibrary.simpleMessage(
@@ -48,11 +51,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailFieldValidationError": MessageLookupByLibrary.simpleMessage(
       "يرجى إدخال بريد إلكتروني صالح",
     ),
-    "eventDate": MessageLookupByLibrary.simpleMessage("تاريخ الحدث"),
-    "eventDescription": MessageLookupByLibrary.simpleMessage("وصف الحدث"),
-    "eventLocation": MessageLookupByLibrary.simpleMessage("موقع الحدث"),
-    "eventTime": MessageLookupByLibrary.simpleMessage("وقت الحدث"),
-    "eventTitle": MessageLookupByLibrary.simpleMessage("عنوان الحدث"),
+    "eventAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تمت إضافة الموعد بنجاح! ستتلقى إشعار تذكير.",
+    ),
+    "eventDate": MessageLookupByLibrary.simpleMessage("تاريخ الموعد"),
+    "eventDeleted": MessageLookupByLibrary.simpleMessage("تم حذف الموعد بنجاع"),
+    "eventDescription": MessageLookupByLibrary.simpleMessage("وصف الموعد"),
+    "eventLocation": MessageLookupByLibrary.simpleMessage("موقع الموعد"),
+    "eventMustBeInFuture": MessageLookupByLibrary.simpleMessage(
+      "يجب أن يتم تحديد الموعد في وقتٍ مستقبلي.",
+    ),
+    "eventTime": MessageLookupByLibrary.simpleMessage("وقت الموعد"),
+    "eventTitle": MessageLookupByLibrary.simpleMessage("عنوان الموعد"),
+    "fillAllFields": MessageLookupByLibrary.simpleMessage(
+      "يرجى ملء جميع الحقول.",
+    ),
+    "findYourEventInMaps": MessageLookupByLibrary.simpleMessage(
+      "اعثر على موعدك في الخريطة",
+    ),
+    "goToEvent": MessageLookupByLibrary.simpleMessage("اذهب إلى موعدك"),
     "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "introPage1Description": MessageLookupByLibrary.simpleMessage(
       "قم بإدارة جميع مواعيدك في تطبيق ذكي واحد. بسيط، منظم، ودائمًا في الوقت المناسب.",
@@ -70,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "خصص ألوان جدولك، نظّم أسبوعك، واجعل موعد يناسب أسلوب حياتك.",
     ),
     "introPage3Title": MessageLookupByLibrary.simpleMessage("وقتك، بطريقتك"),
+    "language": MessageLookupByLibrary.simpleMessage("اللغة"),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
     "loginScreenTitle": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
@@ -84,6 +102,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "nameFieldOnlyLettersError": MessageLookupByLibrary.simpleMessage(
       "يجب أن يحتوي الاسم على أحرف ومسافات فقط",
+    ),
+    "noEventsFotToday": MessageLookupByLibrary.simpleMessage(
+      "لا توجد مواعيد اليوم",
     ),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "passwordFieldDigitError": MessageLookupByLibrary.simpleMessage(

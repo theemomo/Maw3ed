@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:maw3ed/features/home/presentation/pages/home_screen.dart';
+import 'package:maw3ed/features/map/presentation/pages/map_screen.dart';
 import 'package:maw3ed/features/profile/presentation/pages/profile_screen.dart';
 import 'package:maw3ed/generated/l10n.dart';
 
@@ -16,8 +17,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    Scaffold(), // Maps placeholder
-    Scaffold(), // Notifications placeholder
+    MapScreen(), // Maps placeholder
     ProfileScreen(),
   ];
 
@@ -51,11 +51,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
             activeIcon: const Icon(CupertinoIcons.map_fill),
             label: S.of(context).maps,
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(CupertinoIcons.bell),
-            activeIcon: const Icon(CupertinoIcons.bell_fill),
-            label: S.of(context).notifications,
-          ),
+          
           BottomNavigationBarItem(
             icon: const Icon(CupertinoIcons.person),
             activeIcon: const Icon(CupertinoIcons.person_fill),
