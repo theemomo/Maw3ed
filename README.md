@@ -30,7 +30,7 @@ Maw’ed follows **Clean Architecture** with three main layers:
    - Pure Dart code independent from Flutter SDK.
 
 3. **Data Layer**  
-   - Implements repository interfaces and handles local database operations using **`sqflite`**.  
+   - Implements repository interfaces and handles local database operations using **`Shared Preferences`**.  
    - Manages CRUD operations for events, tasks, and notifications.
 
 ### 🧰 Tech Stack
