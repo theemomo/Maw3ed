@@ -67,7 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "يرجى ملء جميع الحقول.",
     ),
     "findYourEventInMaps": MessageLookupByLibrary.simpleMessage(
-      "اعثر على موعدك في الخريطة",
+      "اعثر على موعدك على الخريطة",
     ),
     "goToEvent": MessageLookupByLibrary.simpleMessage("اذهب إلى موعدك"),
     "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
@@ -102,6 +102,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "nameFieldOnlyLettersError": MessageLookupByLibrary.simpleMessage(
       "يجب أن يحتوي الاسم على أحرف ومسافات فقط",
+    ),
+    "noEventsForThisDay": MessageLookupByLibrary.simpleMessage(
+      "لا توجد مواعيد في هذا اليوم",
     ),
     "noEventsFotToday": MessageLookupByLibrary.simpleMessage(
       "لا توجد مواعيد اليوم",

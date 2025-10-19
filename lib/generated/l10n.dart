@@ -573,6 +573,16 @@ class S {
       args: [],
     );
   }
+
+  /// `No Events For This Day`
+  String get noEventsForThisDay {
+    return Intl.message(
+      'No Events For This Day',
+      name: 'noEventsForThisDay',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

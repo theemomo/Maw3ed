@@ -122,12 +122,15 @@
   "@deleteEvent": {},
   "eventDeleted": "تم حذف الموعد بنجاع",
   "@eventDeleted": {},
-  "findYourEventInMaps": "اعثر على موعدك في الخريطة",
+  "findYourEventInMaps": "اعثر على موعدك على الخريطة",
   "@findYourEventInMaps": {},
   "darkMode": "الوضع الداكن",
   "@darkMode": {},
   "language": "اللغة",
   "@language": {},
   "noFutureEvents": "لا توجد مواعيد قادمة",
-  "@noFutureEvents": {}
+  "@noFutureEvents": {},
+  "noEventsForThisDay": "لا توجد مواعيد في هذا اليوم",
+"@noEventsForThisDay": {}
+
 }

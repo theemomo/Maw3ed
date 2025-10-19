@@ -129,6 +129,8 @@
   "language": "Language",
   "@language": {},
   "noFutureEvents" : "No Future Events",
-  "@noFutureEvents": {}
+  "@noFutureEvents": {},
+  "noEventsForThisDay" : "No Events For This Day",
+  "@noEventsForThisDay": {}
 
 }

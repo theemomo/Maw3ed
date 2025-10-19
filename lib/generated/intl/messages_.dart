@@ -111,6 +111,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "nameFieldOnlyLettersError": MessageLookupByLibrary.simpleMessage(
       "Name can only contain letters and spaces",
     ),
+    "noEventsForThisDay": MessageLookupByLibrary.simpleMessage(
+      "No Events For This Day",
+    ),
     "noEventsFotToday": MessageLookupByLibrary.simpleMessage(
       "No Events For Today",
     ),

@@ -206,8 +206,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           BlocConsumer<AuthCubit, AuthState>(
                             listenWhen: (previous, current) =>
                                 current is AuthFailure ||
-                                current is Authenticated ||
-                                current is AuthInitial,
+                                current is Authenticated,
+                                
                             listener: (context, state) {
                               if (state is AuthFailure) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -221,7 +221,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               }
                             },
                             buildWhen: (previous, current) =>
-                                current is AuthLoading,
+                                current is AuthLoading ||
+                                current is AuthInitial,
                             builder: (context, state) {
                               if (state is AuthLoading) {
                                 return ElevatedButton(

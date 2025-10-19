@@ -22,6 +22,17 @@ class FirebaseHomeRepo implements HomeRepo {
       final events = snapshot.docs.map((doc) {
         return EventModel.fromMap(doc.data()).copyWith(uId: doc.id);
       }).toList();
+      events.sort((a, b) {
+        final aHour = a.time.hour;
+        final aMinute = a.time.minute;
+        final bHour = b.time.hour;
+        final bMinute = b.time.minute;
+
+        if (aHour != bHour) {
+          return aHour.compareTo(bHour);
+        }
+        return aMinute.compareTo(bMinute);
+      });
 
       return events; // If there is no events the function will return []
     } catch (e) {
@@ -37,12 +48,31 @@ class FirebaseHomeRepo implements HomeRepo {
           .collection('users')
           .doc(_auth.currentUser!.uid)
           .collection('events')
-          .where('date', isEqualTo: DateTime(date.year, date.month, date.day).millisecondsSinceEpoch)
+          .where(
+            'date',
+            isEqualTo: DateTime(
+              date.year,
+              date.month,
+              date.day,
+            ).millisecondsSinceEpoch,
+          )
           .get();
 
       final events = snapshot.docs.map((doc) {
         return EventModel.fromMap(doc.data()).copyWith(uId: doc.id);
       }).toList();
+
+      events.sort((a, b) {
+        final aHour = a.time.hour;
+        final aMinute = a.time.minute;
+        final bHour = b.time.hour;
+        final bMinute = b.time.minute;
+
+        if (aHour != bHour) {
+          return aHour.compareTo(bHour);
+        }
+        return aMinute.compareTo(bMinute);
+      });
 
       return events; // If there is no events the function will return []
     } catch (e) {

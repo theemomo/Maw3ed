@@ -134,7 +134,7 @@ class _CalenderContentState extends State<CalenderContent> {
                                   ),
                                   SizedBox(height: size.height * 0.02),
                                   Text(
-                                    S.of(context).noEventsFotToday,
+                                    S.of(context).noEventsForThisDay,
                                     style: Theme.of(
                                       context,
                                     ).textTheme.titleMedium,
