@@ -11,7 +11,6 @@ It is designed with scalability, maintainability, and user convenience in mind, 
 - 🌓 **Dynamic theming** — Light and Dark mode support
 - 🧱 **Clean architecture** — Separation of presentation, domain, and data layers
 - 🔔 **Smart notification system** — Local notifications to remind users of upcoming meetings and events
-- 💾 **Local data storage** — Persistent event data storage using `sqflite`
 - 📅 **Calendar-based event organization** — Users can manage and view their appointments by date
 - ⚡ **Responsive and adaptive UI** — Optimized for both Android and iOS
 - 🧩 **Bloc pattern** — Ensures predictable state transitions and easier debugging
