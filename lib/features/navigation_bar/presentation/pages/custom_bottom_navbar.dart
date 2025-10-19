@@ -36,8 +36,8 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        selectedItemColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         items: [

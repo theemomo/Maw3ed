@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:maw3ed/core/route/app_routes.dart';
 import 'package:maw3ed/features/home/presentation/cubits/home_cubit/home_cubit.dart';
+import 'package:maw3ed/features/home/presentation/widgets/date_time_shimmer.dart';
 import 'package:maw3ed/generated/l10n.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TodayContent extends StatelessWidget {
   const TodayContent({super.key});
@@ -32,11 +34,7 @@ class TodayContent extends StatelessWidget {
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         // While waiting, show a small fade-in shimmer or spinner
-                        return const AnimatedOpacity(
-                          duration: Duration(milliseconds: 500),
-                          opacity: 0.0,
-                          child: SizedBox(),
-                        );
+                        return const DateTimeShimmer();
                       }
 
                       final now = snapshot.data!;
@@ -119,9 +117,10 @@ class TodayContent extends StatelessWidget {
                                   SizedBox(height: size.height * 0.02),
                                   Text(
                                     S.of(context).noEventsFotToday,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleMedium,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(color: Colors.black87),
                                   ),
                                 ],
                               );

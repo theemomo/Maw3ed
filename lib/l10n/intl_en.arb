@@ -127,6 +127,8 @@
   "darkMode":"Dark Mode",
   "@darkMode": {},
   "language": "Language",
-  "@language": {}
+  "@language": {},
+  "noFutureEvents" : "No Future Events",
+  "@noFutureEvents": {}
 
 }

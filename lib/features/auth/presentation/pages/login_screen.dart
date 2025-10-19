@@ -50,7 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       child: Icon(
                         Icons.calendar_today_rounded,
-                        size: size.width * 0.15,
+                        size: size.width > 600
+                            ? size.width * 0.09
+                            : size.width * 0.15,
                       ),
                     ),
                   ),
@@ -83,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (value == null || value.isEmpty) {
                                 return S.of(context).emailFieldEmptyError;
                               }
-          
+
                               // Basic email pattern
                               final emailRegex = RegExp(
                                 r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
@@ -91,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (!emailRegex.hasMatch(value)) {
                                 return S.of(context).emailFieldValidationError;
                               }
-          
+
                               return null;
                             },
                             fieldController: _emailController,
@@ -114,10 +116,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (value.length < 8) {
                                 return S.of(context).passwordFieldLengthError;
                               }
-          
+
                               return null; // valid password
                             },
-          
+
                             fieldController: _passwordController,
                             fieldFocusNode: _passwordFocusNode,
                             onFieldSubmitted: (value) {
@@ -192,7 +194,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       onPressed: () {
                                         Navigator.of(
                                           context,
-                                        ).pushNamedAndRemoveUntil(AppRoutes.homeRoute, (route)=> false);
+                                        ).pushNamedAndRemoveUntil(
+                                          AppRoutes.homeRoute,
+                                          (route) => false,
+                                        );
                                       },
                                       child: Text(
                                         "go to home screen",
@@ -211,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 );
                               }
-          
+
                               return AppButton(
                                 title: S.of(context).loginScreenTitle,
                                 onPressed: () {
@@ -227,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           // SizedBox(height: size.height * 0.03),
                           Padding(
-                            padding:  EdgeInsets.only(top:size.height * 0.19 ),
+                            padding: EdgeInsets.only(top: size.height * 0.19),
                             child: Row(
                               children: [
                                 Text(
@@ -242,7 +247,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                   child: Text(
                                     S.of(context).signUp,
-                                    style: Theme.of(context).textTheme.bodyMedium!
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
                                         .copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ),

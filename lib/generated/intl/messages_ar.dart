@@ -106,6 +106,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noEventsFotToday": MessageLookupByLibrary.simpleMessage(
       "لا توجد مواعيد اليوم",
     ),
+    "noFutureEvents": MessageLookupByLibrary.simpleMessage(
+      "لا توجد مواعيد قادمة",
+    ),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "passwordFieldDigitError": MessageLookupByLibrary.simpleMessage(
       "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",

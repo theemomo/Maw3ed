@@ -127,5 +127,7 @@
   "darkMode": "الوضع الداكن",
   "@darkMode": {},
   "language": "اللغة",
-  "@language": {}
+  "@language": {},
+  "noFutureEvents": "لا توجد مواعيد قادمة",
+  "@noFutureEvents": {}
 }

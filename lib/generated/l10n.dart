@@ -563,6 +563,16 @@ class S {
   String get language {
     return Intl.message('Language', name: 'language', desc: '', args: []);
   }
+
+  /// `No Future Events`
+  String get noFutureEvents {
+    return Intl.message(
+      'No Future Events',
+      name: 'noFutureEvents',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -57,7 +57,7 @@ class AppTheme {
         primary: Color(0xFFE0E0E0),
         onPrimary: Colors.grey,
         secondary: Color(0xFF2A2A2A),
-        tertiary: Color(0xFF000000),
+        tertiary: Color(0xFF1E1E1E),
         inversePrimary: Color(0xFFFFFFFF),
       ),
       cardColor: const Color(0xFF1E1E1E),

@@ -114,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noEventsFotToday": MessageLookupByLibrary.simpleMessage(
       "No Events For Today",
     ),
+    "noFutureEvents": MessageLookupByLibrary.simpleMessage("No Future Events"),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "passwordFieldDigitError": MessageLookupByLibrary.simpleMessage(
       "Password must contain at least one number",

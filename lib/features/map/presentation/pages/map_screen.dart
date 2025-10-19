@@ -8,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:maw3ed/features/map/presentation/cubit/map_cubit.dart';
+import 'package:maw3ed/features/map/presentation/widgets/map_screen_shimmer.dart';
 import 'package:maw3ed/generated/l10n.dart';
 
 class MapScreen extends StatefulWidget {
@@ -149,50 +150,60 @@ class _MapScreenState extends State<MapScreen> {
           centerTitle: true,
         ),
         body: currentLocation == null
-            ? const Center(child: CircularProgressIndicator())
+            ? const MapScreenShimmer()
             : Column(
                 children: [
                   Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 2,
                         color: Theme.of(context).colorScheme.primary,
                       ),
+                      borderRadius: BorderRadius.circular(20), // your radius
                     ),
-                    margin: const EdgeInsets.only(right: 15, left: 15),
                     width: size.width,
                     height: size.height * 0.4,
-                    child: FlutterMap(
-                      mapController: _mapController,
-                      options: MapOptions(
-                        initialCenter: LatLng(
-                          currentLocation!.latitude!,
-                          currentLocation!.longitude!,
-                        ),
-                        initialZoom: 15,
-                        onTap: (tapPosition, point) {},
-                      ),
-                      children: [
-                        TileLayer(
-                          urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          subdomains: const ['a', 'b', 'c'],
-                          userAgentPackageName: 'com.example.maps',
-                        ),
-                        MarkerLayer(markers: markers),
-                        if (routePoints.isNotEmpty)
-                          PolylineLayer(
-                            polylines: [
-                              Polyline(
-                                points: routePoints,
-                                strokeWidth: 4,
-                                color: Colors.blue,
-                              ),
-                            ],
+                    clipBehavior: Clip
+                        .hardEdge, // Important when using Decoration + child
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                        18,
+                      ), // slightly less than border
+                      child: FlutterMap(
+                        mapController: _mapController,
+                        options: MapOptions(
+                          initialCenter: LatLng(
+                            currentLocation!.latitude!,
+                            currentLocation!.longitude!,
                           ),
-                      ],
+                          initialZoom: 15,
+                          onTap: (tapPosition, point) {},
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            subdomains: const ['a', 'b', 'c'],
+                            userAgentPackageName: 'com.example.maps',
+                          ),
+                          MarkerLayer(markers: markers),
+                          if (routePoints.isNotEmpty)
+                            PolylineLayer(
+                              polylines: [
+                                Polyline(
+                                  points: routePoints,
+                                  strokeWidth: 4,
+                                  color: Colors.blue,
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
                     ),
                   ),
+
+                  const SizedBox(height: 20),
                   Expanded(
                     child: SingleChildScrollView(
                       child: BlocBuilder<MapCubit, MapState>(
@@ -218,7 +229,7 @@ class _MapScreenState extends State<MapScreen> {
                                   ),
                                   SizedBox(height: size.height * 0.02),
                                   Text(
-                                    S.of(context).noEventsFotToday,
+                                    S.of(context).noFutureEvents,
                                     style: Theme.of(
                                       context,
                                     ).textTheme.titleMedium,

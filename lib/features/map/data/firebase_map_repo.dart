@@ -14,6 +14,15 @@ class FirebaseMapRepo implements MapRepo {
           .collection('users')
           .doc(_auth.currentUser!.uid)
           .collection('events')
+          .where(
+            'date',
+            isGreaterThanOrEqualTo: DateTime(
+              DateTime.now().year,
+              DateTime.now().month,
+              DateTime.now().day,
+            ).millisecondsSinceEpoch,
+          )
+          .orderBy('date', descending: false)
           .get();
 
       final events = snapshot.docs.map((doc) {
